@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "AutoBedLeveling.h"
+#include "./AutoBedLeveling.h"
 
 int main(void){
 	printf("int main(void)\n");
@@ -17,10 +17,13 @@ int main(void){
     // reading line by line, max 256 bytes
     const unsigned MAX_LENGTH = 256;
     char buffer[MAX_LENGTH];
+    ABL_LoadLinePointer(buffer);
 
-    while (fgets(buffer, MAX_LENGTH, fp))
-        printf("%s", buffer);
-
+    while (fgets(buffer, MAX_LENGTH, fp)){
+        //printf("%s", buffer);
+        printf("X=%d\n",ABL_GetPosition('X'));
+    }
+        
     // close the file
     fclose(fp);
 	
