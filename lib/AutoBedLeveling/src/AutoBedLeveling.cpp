@@ -66,16 +66,13 @@ void line(float newx, float newy)
         over = dx / 2;
         for (i = 0; i < dx; ++i)
         {
-            //m1step(dirx);
             _posX += dirx;
             over += dy;
             if (over >= dx)
             {
                 over -= dx;
-                //m2step(diry);
                 _posY += diry;
             }
-            //pause(step_delay);
             if (_posX % (long)(10 * RATIO) == 0 || _posY % (long)(10 * RATIO) == 0)
                 printf("X%.3f Y%.3f\n", _posX/RATIO , _posY/RATIO);
         }
@@ -92,7 +89,6 @@ void line(float newx, float newy)
                 over -= dy;
                 _posX += dirx;
             }
-            //pause(step_delay);
             if (_posX % (long)(10 * RATIO) == 0 || _posY % (long)(10 * RATIO) == 0)
                 printf("X%.3f Y%.3f\n", _posX/RATIO, _posY/RATIO);
         }
