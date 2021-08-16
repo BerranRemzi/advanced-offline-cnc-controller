@@ -4,8 +4,8 @@
 #include <stdint.h>
 
 void AutoBedLeveling(void);
-void ABL_LoadLinePointer(char * line);
-int ABL_GetPosition(char axis);
-double parseNumber(char code, float val);
+void ABL_LoadLinePointer(char* line);
+
+bool ABL_ParseNumber(char code, double* pValue);
 
 #endif /* AUTO_BED_LEVELING_H */

@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include "./AutoBedLeveling.h"
 
-int main(void){
-	printf("int main(void)\n");
-	AutoBedLeveling();
-	
-	const char filename[] = "bottom_contour.nc";
-    FILE *fp = fopen(filename, "r");
+int main(void) {
+    //printf("int main(void)\n");
+    //AutoBedLeveling();
+
+    const char filename[] = "bottom_contour.nc";
+    FILE* fp = fopen(filename, "r");
 
     if (fp == nullptr)
     {
@@ -20,16 +20,39 @@ int main(void){
     char buffer[MAX_LENGTH];
     ABL_LoadLinePointer(buffer);
 
-    while (fgets(buffer, MAX_LENGTH, fp)){
-        printf("X=%.3f ", parseNumber('X', 0));
-        printf("Y=%.3f ", parseNumber('Y', 0));
-        printf("Z=%.3f\n", parseNumber('Z', 0));
+    while (fgets(buffer, MAX_LENGTH, fp)) {
+        double value = 0;
+        if (true == ABL_ParseNumber('G', &value)) {
+            printf("G%02d ", (int) value);
+
+            if (true == ABL_ParseNumber('F', &value)) {
+                printf("F%d ", (int) value);
+            }
+            if (true == ABL_ParseNumber('X', &value)) {
+                printf("X%.3f ", value);
+            }
+            if (true == ABL_ParseNumber('Y', &value)) {
+                printf("Y%.3f ", value);
+            }
+            if (true == ABL_ParseNumber('Z', &value)) {
+                printf("Z%.3f", value);
+            }
+            printf("\n");
+        }
+        else if (true == ABL_ParseNumber('M', &value)) {
+            printf("M%02d ", (int) value);
+
+            if (true == ABL_ParseNumber('S', &value)) {
+                printf("S%d ", (int) value);
+            }
+            printf("\n");
+        }
     }
-        
+
     // close the file
     fclose(fp);
-	
-	printf("Press ENTER to exit...");
-	getchar();
-	return 0;
+
+    printf("Press ENTER to exit...");
+    getchar();
+    return 0;
 }

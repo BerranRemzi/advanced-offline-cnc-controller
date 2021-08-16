@@ -4,27 +4,17 @@
 #include <math.h>
 #include <string.h>
 
-char * serialBuffer;
-int   sofar = 255;            // how much is in the buffer
-double px, py;      // location
+char* serialBuffer;
+int   soFar = 255;            // how much is in the buffer
+double posX;
+double posY;      // location
 
-void AutoBedLeveling(void){
-	printf("void AutoBedLeveling(void)\n");
+void AutoBedLeveling(void) {
+    printf("void AutoBedLeveling(void)\n");
 }
 
-void ABL_LoadLinePointer(char * line){
+void ABL_LoadLinePointer(char* line) {
     serialBuffer = line;
-}
-
-int ABL_GetPosition(char axis){
-	int position = -1;
-	//char temp[32];
-	for(int i = 0; serialBuffer[i] != '\0';i++){
-		if (serialBuffer[i] == axis) {
-			position = 0;
-		}
-	}
-	return position;
 }
 
 /**
@@ -33,13 +23,14 @@ int ABL_GetPosition(char axis){
  * @input code the character to look for.
  * @input val the return value if /code/ is not found.
  **/
-double parseNumber(char code, float val) {
+bool ABL_ParseNumber(char code, double* pValue) {
     char* ptr = serialBuffer;  // start at the beginning of buffer
-    while ((long) ptr > 1 && (*ptr) && (long) ptr < (long) serialBuffer + sofar) {  // walk to the end
+    while ((long) ptr > 1 && (*ptr) && (long) ptr < (long) serialBuffer + soFar) {  // walk to the end
         if (*ptr == code) {  // if you find code on your walk,
-            return atof(ptr + 1);  // convert the digits that follow into a float and return it
+            *pValue = atof(ptr + 1);  // convert the digits that follow into a float and return it
+            return true;
         }
         ptr = strchr(ptr, ' ') + 1;  // take a step from here to the letter after the next space
     }
-    return val;  // end reached, nothing found, return default val.
+    return false;  // end reached, nothing found, return default val.
 }
