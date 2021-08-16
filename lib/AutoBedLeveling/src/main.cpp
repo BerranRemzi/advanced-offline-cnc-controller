@@ -52,6 +52,10 @@ int main(void) {
     // close the file
     fclose(fp);
 
+    line(9, 25);
+    float z = bilinearInterpolation(0,0,5,5,0,10,0,10,5,5);
+    printf("%f",z);
+
     printf("Press ENTER to exit...");
     getchar();
     return 0;
