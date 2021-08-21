@@ -5,7 +5,7 @@
 #include <math.h>
 #include <string.h>
 
-#define RATIO 10.0
+#define RATIO 1000.0
 
 char *serialBuffer;
 Coordinates_t previousCoord;
@@ -60,6 +60,10 @@ void line(float newx, float newy)
     long dy = (_newY - _posY);
     long dirx = dx > 0 ? 1 : -1;
     long diry = dy > 0 ? 1 : -1;
+
+    static Index_t prevIndex;
+    Index_t currentIndex;
+
     dx = abs(dx);
     dy = abs(dy);
 
@@ -75,8 +79,13 @@ void line(float newx, float newy)
                 over -= dx;
                 _posY += diry;
             }
-            if (_posX % (long)(10 * RATIO) == 0 || _posY % (long)(10 * RATIO) == 0)
-                printf("X%.3f Y%.3f\n", _posX/RATIO , _posY/RATIO);
+            Coordinates_t pos = {_posX/RATIO, _posY/RATIO};
+            currentIndex = getGridIndex(pos);
+
+            if ((prevIndex.x != currentIndex.x) || (prevIndex.y != currentIndex.y)){
+                printf("X%.2f Y%.2f\n", _posX/RATIO , _posY/RATIO);
+            }
+            prevIndex = currentIndex;
         }
     }
     else
@@ -91,12 +100,17 @@ void line(float newx, float newy)
                 over -= dy;
                 _posX += dirx;
             }
-            if (_posX % (long)(10 * RATIO) == 0 || _posY % (long)(10 * RATIO) == 0)
-                printf("X%.3f Y%.3f\n", _posX/RATIO, _posY/RATIO);
+            Coordinates_t pos = {_posX/RATIO, _posY/RATIO};
+            currentIndex = getGridIndex(pos);
+
+            if ((prevIndex.x != currentIndex.x) || (prevIndex.y != currentIndex.y)){
+                printf("X%.2f Y%.2f\n", _posX/RATIO , _posY/RATIO);
+            }
+            prevIndex = currentIndex;
         }
     }
 
-    printf("X%.3f Y%.3f\n", _posX/RATIO, _posY/RATIO);
+    printf("X%.2f Y%.2f\n", _posX/RATIO, _posY/RATIO);
 
     posX = newx;
     posY = newy;

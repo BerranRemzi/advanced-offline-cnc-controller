@@ -9,6 +9,11 @@ typedef struct{
     double z;
 } Coordinates_t;
 
+typedef struct{
+    long x;
+    long y;
+} CoordinatesLong_t;
+
 typedef struct {
     int x;
     int y;

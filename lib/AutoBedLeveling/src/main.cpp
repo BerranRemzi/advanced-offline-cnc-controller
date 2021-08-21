@@ -80,7 +80,11 @@ int main(void) {
     //printf("Press ENTER to exit...");
     //getchar();
     Coordinates_t coordtest;
-    printf("%d",getIntersections(nullptr, coordtest));
+    printf("%d\n",getIntersections(nullptr, coordtest));
 
+    line(0,0);
+    line(7,28);
+    line(2,7);
+    line(28,2);
     return 0;
 }
