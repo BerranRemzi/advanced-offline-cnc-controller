@@ -1,0 +1,28 @@
+# depslib dependency file v1.0
+1629522708 source:c:\users\pc\downloads\advanced-offline-cnc-controller\advanced-offline-cnc-controller\main.cpp
+	<iostream>
+
+1629582483 source:c:\users\pc\documents\github\advanced-offline-cnc-controller\lib\autobedleveling\src\autobedleveling.cpp
+	"./AutoBedLeveling.h"
+	<stdio.h>
+	<stdint.h>
+	<stdlib.h>
+	<math.h>
+	<string.h>
+
+1629582338 c:\users\pc\documents\github\advanced-offline-cnc-controller\lib\autobedleveling\src\autobedleveling.h
+	<stdint.h>
+
+1629582449 source:c:\users\pc\documents\github\advanced-offline-cnc-controller\lib\autobedleveling\src\main.cpp
+	<stdio.h>
+	<string.h>
+	"AutoBedLeveling.h"
+	"Test.h"
+
+1629580691 source:c:\users\pc\documents\github\advanced-offline-cnc-controller\lib\autobedleveling\src\test.cpp
+	"Test.h"
+
+1629535910 c:\users\pc\documents\github\advanced-offline-cnc-controller\lib\autobedleveling\src\test.h
+	<stdlib.h>
+	<stdint.h>
+

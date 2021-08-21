@@ -8,6 +8,8 @@
 #define RATIO 10.0
 
 char *serialBuffer;
+Coordinates_t previousCoord;
+Coordinates_t midCoord;
 int soFar = 255; // how much is in the buffer
 double posX = 1.0;
 double posY = 1.0; // location
@@ -57,7 +59,7 @@ void line(float newx, float newy)
     long dx = (_newX - _posX);
     long dy = (_newY - _posY);
     long dirx = dx > 0 ? 1 : -1;
-    long diry = dy > 0 ? 1 : -1; 
+    long diry = dy > 0 ? 1 : -1;
     dx = abs(dx);
     dy = abs(dy);
 
@@ -100,7 +102,7 @@ void line(float newx, float newy)
     posY = newy;
 }
 
-float bilinearInterpolation(float q11, float q12, float q21, float q22, float x1, float x2, float y1, float y2, float x, float y) 
+float bilinearInterpolation(float q11, float q12, float q21, float q22, float x1, float x2, float y1, float y2, float x, float y)
 {
     float x2x1, y2y1, x2x, y2y, yy1, xx1;
     x2x1 = x2 - x1;
@@ -115,4 +117,42 @@ float bilinearInterpolation(float q11, float q12, float q21, float q22, float x1
         q12 * x2x * yy1 +
         q22 * xx1 * yy1
     );
+}
+double linearInterpolation(double xp, double x0, double y0,double x1,double y1){
+    return y0 + ((y1-y0)/(x1-x0)) * (xp - x0);
+}
+
+Index_t getGridIndex(Coordinates_t coordinates) {
+    Index_t temp;
+    temp.x = coordinates.x / 10;
+    temp.y = coordinates.y / 10;
+
+    if (temp.x < 0) temp.x = 0;
+    else if (temp.x > 3) temp.x = 3;
+
+    if (temp.y < 0) temp.y = 0;
+    else if (temp.y > 3) temp.y = 3;
+
+    return temp;
+}
+
+double GetX(double yp, Coordinates_t p0, Coordinates_t p1){
+    return linearInterpolation(yp, p0.y, p0.x, p0.y, p0.x);
+}
+
+double GetY(double xp, Coordinates_t p0, Coordinates_t p1){
+    return linearInterpolation(xp, p0.x, p0.y, p0.x, p0.y);
+}
+
+bool getIntersections(char* buffer, Coordinates_t current){
+    bool value = false;
+
+    if (current.x == midCoord.x && current.y == midCoord.y) {
+        previousCoord = current;
+        value = true;
+    } else {
+        //Bresenham
+    }
+
+    return value;
 }
