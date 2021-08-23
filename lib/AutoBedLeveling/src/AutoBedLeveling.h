@@ -3,33 +3,48 @@
 
 #include <stdint.h>
 
-typedef struct{
+typedef enum {
+    LINE_INIT,
+    LINE_BUSY,
+    LINE_DONE
+}ComputeLine_t;
+
+typedef struct {
     double x;
     double y;
     double z;
 } Coordinates_t;
 
-typedef struct{
-    long x;
-    long y;
+typedef struct {
+    int32_t x;
+    int32_t y;
 } CoordinatesLong_t;
 
 typedef struct {
-    int x;
-    int y;
+    int16_t x;
+    int16_t y;
 } Index_t;
 
-void AutoBedLeveling(void);
-void ABL_LoadLinePointer(char* line);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-bool ABL_ParseNumber(char code, double* pValue);
+    void AutoBedLeveling(void);
+    void ABL_LoadLinePointer(char* line);
 
-void line(float newx, float newy);
-float bilinearInterpolation(float q11, float q12, float q21, float q22, float x1, float x2, float y1, float y2, float x, float y);
-double linearInterpolation(double xp, double x0, double y0,double x1,double y1);
-Index_t getGridIndex(Coordinates_t coordinates);
-double GetX(double yp, Coordinates_t p0, Coordinates_t p1);
-double GetY(double xp, Coordinates_t p0, Coordinates_t p1);
-bool getIntersections(char* buffer, Coordinates_t current);
+    bool ABL_ParseNumber(char code, double* pValue);
+
+    void line(double newx, double newy);
+    double bilinearInterpolation(double q11, double q12, double q21, double q22, double x1, double x2, double y1, double y2, double x, double y);
+    double linearInterpolation(double xp, double x0, double y0, double x1, double y1);
+    Index_t getGridIndex(Coordinates_t  const* coordinates);
+    double GetX(double xp, Coordinates_t const* p0, Coordinates_t const* p1);
+    double GetY(double xp, Coordinates_t const* p0, Coordinates_t const* p1);
+    bool getIntersections(char* buffer, Coordinates_t current);
+    bool ComputeLine(double newx, double newy);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* AUTO_BED_LEVELING_H */

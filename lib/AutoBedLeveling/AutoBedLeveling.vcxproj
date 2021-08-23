@@ -143,9 +143,11 @@
   <ItemGroup>
     <ClCompile Include="src\AutoBedLeveling.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AutoBedLeveling.h" />
+    <ClInclude Include="src\Test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
