@@ -18,8 +18,8 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-fpermissive" />
 		</Compiler>
 		<Unit filename="src/AutoBedLeveling.cpp" />
 		<Unit filename="src/AutoBedLeveling.h" />

@@ -1,5 +1,4 @@
-#include <stdlib.h>
-#include <stdint.h>
+#include "main.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,4 +9,7 @@ extern "C" {
 
 #ifdef __cplusplus
 }
+string ReadStringUntil(char marker);
+bool Available();
+
 #endif
