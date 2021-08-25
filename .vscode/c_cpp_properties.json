@@ -8,7 +8,6 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "C:/Users/Berran/Documents/GitHub/advanced-offline-cnc-controller/include",
                 "C:/Users/Berran/Documents/GitHub/advanced-offline-cnc-controller/src",
                 "C:/Users/Berran/Documents/GitHub/advanced-offline-cnc-controller/.pio/libdeps/nano/LiquidCrystal_I2C",
                 "C:/Users/Berran/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
@@ -19,12 +18,14 @@
                 "C:/Users/Berran/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                 "C:/Users/Berran/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
                 "C:/Users/Berran/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                ""
+                "",
+                "${workspaceFolder}/lib/Button",
+                "${workspaceFolder}/lib/Task",
+                "${workspaceFolder}/lib/Menu"
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "C:/Users/Berran/Documents/GitHub/advanced-offline-cnc-controller/include",
                     "C:/Users/Berran/Documents/GitHub/advanced-offline-cnc-controller/src",
                     "C:/Users/Berran/Documents/GitHub/advanced-offline-cnc-controller/.pio/libdeps/nano/LiquidCrystal_I2C",
                     "C:/Users/Berran/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
