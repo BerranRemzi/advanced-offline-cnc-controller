@@ -1,5 +1,7 @@
 #include "Test.h"
 
+using namespace std;
+
 const char testData[][255] =
 {
     {"G00"},
@@ -11,7 +13,7 @@ const char testData[][255] =
     {"G80"},
     {"G90"},
     {"G94"},
-    {"G00 F3000 X0.00 Y0.00 Z3.00"},
+    {"G00 F3000 Z3.00"},
     {"M03 S9000"},
     {"G00 F3000 X7.00 Y28.00 Z3.00"},
     {"G00 F1500 Z0.00"},
@@ -52,3 +54,11 @@ const double zMap[4][4] = {
     {0.2, 0.3, 0.4, 0.5},
     {0.3, 0.4, 0.5, 0.6}
 };
+
+string ReadStringUntil(char marker){
+
+    return "Line\n";
+}
+bool Available(){
+    return false;
+}

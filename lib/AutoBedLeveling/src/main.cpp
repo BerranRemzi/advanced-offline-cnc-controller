@@ -1,12 +1,13 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <string.h>
+#include "main.h"
 #include "AutoBedLeveling.h"
 #include "Test.h"
 
 #define MAX_LENGTH 255
+
+void Test1();
+void Test2();
+void Test3();
+void Test4();
 
 int main(void) {
     const char filename[] = "bottom_contour.nc";
@@ -76,19 +77,31 @@ int main(void) {
     // close the file
     fclose(fp);
 
+    Test1();
+    Test2();
+    Test3();
+    return 0;
+}
+
+void Test1(){
     printf("line();\n");
     line(0, 0);
     line(7, 28);
     line(2, 7);
     line(28, 2);
     line(0, 0);
-
+}
+void Test2(){
     printf("ComputeLine();\n");
     while (!ComputeLine(0, 0));
     while (!ComputeLine(7, 28));
     while (!ComputeLine(2, 7));
     while (!ComputeLine(28, 2));
     while (!ComputeLine(0, 0));
-
-    return 0;
+}
+void Test3(){
+    while(Available()){
+        string temp = ReadStringUntil('\r');
+        std::cout << temp;
+    }
 }

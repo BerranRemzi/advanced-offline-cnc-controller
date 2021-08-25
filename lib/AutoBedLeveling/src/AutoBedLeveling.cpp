@@ -1,4 +1,4 @@
-#include "./AutoBedLeveling.h"
+#include "AutoBedLeveling.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>

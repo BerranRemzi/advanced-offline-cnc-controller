@@ -18,14 +18,15 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-fpermissive" />
 		</Compiler>
 		<Unit filename="src/AutoBedLeveling.cpp" />
 		<Unit filename="src/AutoBedLeveling.h" />
 		<Unit filename="src/Test.cpp" />
 		<Unit filename="src/Test.h" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/main.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
