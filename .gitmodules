@@ -1,0 +1,3 @@
+[submodule "lib/LCDMenu"]
+	path = lib/LCDMenu
+	url = https://github.com/BerranRemzi/LCDMenu.git
