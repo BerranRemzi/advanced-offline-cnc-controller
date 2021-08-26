@@ -20,6 +20,9 @@ void RunFunction(void);
 void SubMenu_Prepare(void);
 void SubMenu_Control(void);
 
+void SD_Init();
+void printDirectory(File dir, int numTabs);
+
 void (*pPrintScreen[8])(void);
 
 LiquidCrystal_I2C lcd(0x27, LCD_WIDTH, LCD_HEIGHT);
@@ -36,6 +39,7 @@ void setup()
   Button_Init();
   pPrintScreen[menuDepth] = &Menu_TestScreen;
   UpdateScreen();
+  SD_Init();
 }
 
 void loop()
@@ -122,5 +126,44 @@ void ReadInputs(void)
   if (IsPressed(RIGHT_PIN))
   {
     LCDMenu_Select();
+  }
+}
+void SD_Init(){
+  Serial.print("Initializing SD card...");
+
+  if (!SD.begin(10)) {
+    Serial.println("initialization failed!");
+    while (1);
+  }
+  Serial.println("initialization done.");
+
+  root = SD.open("/");
+
+  printDirectory(root, 0);
+
+  Serial.println("done!");
+}
+
+void printDirectory(File dir, int numTabs) {
+  while (true) {
+
+    File entry =  dir.openNextFile();
+    if (! entry) {
+      // no more files
+      break;
+    }
+    for (uint8_t i = 0; i < numTabs; i++) {
+      Serial.print('\t');
+    }
+    Serial.print(entry.name());
+    if (entry.isDirectory()) {
+      Serial.println("/");
+      printDirectory(entry, numTabs + 1);
+    } else {
+      // files have sizes, directories do not
+      Serial.print("\t\t");
+      Serial.println(entry.size(), DEC);
+    }
+    entry.close();
   }
 }
