@@ -1,56 +1,109 @@
 #include "Arduino.h"
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-#include <Button.h>
-#include <Task.h>
-#include <Menu.h>
+#include "Button.h"
+#include "LCDMenu.h"
 
-LiquidCrystal_I2C lcd(0x27, 20, 4);
+/*******************************************************
 
-const uint8_t arrow[8] = {0x00, 0x04, 0x06, 0x1f, 0x06, 0x04, 0x00};
-const uint8_t newLine[] = {0x01, 0x01, 0x01, 0x05, 0x09, 0x1F, 0x08, 0x04};
+  This program will test the LCD panel and the buttons
+  Berran Remzi, Septeber 2020
 
-void Func1()
-{
-}
-void Back()
-{
-}
+********************************************************/
 
-void MenuMovement()
-{
-  if (IsPressed(DOWN_PIN))
-  {
-    Menu_Down();
-  }
-  if (IsPressed(UP_PIN))
-  {
-    Menu_Up();
-  }
-}
+void ReadInputs(void);
+void DrawMenu(void);
+void UpdateScreen(void);
+void SubMenu_1(void);
+void Menu_TestScreen(void);
+void RunFunction(void);
+
+void (*pPrintScreen[8])(void);
+
+LiquidCrystal_I2C lcd(0x27, LCD_WIDTH, LCD_HEIGHT);
+
 void setup()
 {
-  lcd.init(); // initialize the lcd
+  Serial.begin(115200);
+
   lcd.init();
   lcd.backlight();
-  lcd.createChar(0, (uint8_t *)arrow);
-  lcd.createChar(1, (uint8_t *)newLine);
+  lcd.createChar(0, (uint8_t *)arrowChar);  //We create the data to be sent later using lcd.write
+  lcd.createChar(1, (uint8_t *)returnChar); //We create the data to be sent later using lcd.write
+  
   pinMode(2, INPUT_PULLUP);
   pinMode(3, INPUT_PULLUP);
   pinMode(4, INPUT_PULLUP);
   pinMode(5, INPUT_PULLUP);
+
+  pPrintScreen[menuDepth] = &Menu_TestScreen;
+  UpdateScreen();
 }
-void MainMenu()
-{
-  MENU_START();
-  MENU_BACK("Back");
-  MENU_FOLDER("Folder", Func1);
-  MENU_VALUE("Value:", selection * 100);
-  MENU_FUNCTION("Function", Func1);
-  MENU_END();
-}
+
 void loop()
 {
-  TASK(MENU, MainMenu(), 100);
-  TASK(BUTTONS, MenuMovement(), 50);
+
+  //DrawMenu2();
+  if (IsSinglePressed())
+  {
+    UpdateScreen();
+    UpdateScreen();
+  }
+  delay(10);
+  ReadInputs();
+}
+
+void UpdateScreen(void)
+{
+  clear_screen();
+  if (*pPrintScreen[menuDepth] != NULL)
+  {
+    pPrintScreen[menuDepth]();
+  }
+}
+int value = 0;
+void Menu_TestScreen(void)
+{
+  START_MENU();
+  SUBMENU("SubMenu_1", SubMenu_1);
+  EDIT_ITEM_FAST("value", value);
+  ACTION_ITEM("RunFunction", RunFunction);
+  STATIC_ITEM("Bernar 1");
+  STATIC_ITEM("Berran 2");
+  STATIC_ITEM("Gulcan 3");
+  STATIC_ITEM("Static text 4");
+  STATIC_ITEM("Static text 5");
+  STATIC_ITEM("Static text 6");
+  STATIC_ITEM("Static text 7");
+  STATIC_ITEM("Static text 8");
+  END_MENU();
+}
+void SubMenu_1(void)
+{
+  START_MENU();
+  BACK_ITEM("<<BACK");
+  STATIC_ITEM("Static text 1");
+  END_MENU();
+}
+
+void RunFunction(void)
+{
+  Serial.println(millis());
+  Serial.println(VALUE_FORMAT(LCD_WIDTH));
+}
+
+void ReadInputs(void)
+{
+  if (IsPressed(DOWN_PIN))
+  {
+    LCDMenu_Down();
+  }
+  if (IsPressed(UP_PIN))
+  {
+    LCDMenu_Up();
+  }
+  if (IsPressed(RIGHT_PIN))
+  {
+    LCDMenu_Select();
+  }
 }

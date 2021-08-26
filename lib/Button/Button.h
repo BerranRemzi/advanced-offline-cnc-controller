@@ -9,3 +9,4 @@
 #define BTN_PRESSED LOW
 
 bool IsPressed(int8_t _num);
+bool IsSinglePressed();
