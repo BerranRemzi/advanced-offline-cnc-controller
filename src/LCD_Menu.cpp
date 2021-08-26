@@ -14,9 +14,11 @@
 void ReadInputs(void);
 void DrawMenu(void);
 void UpdateScreen(void);
-void SubMenu_1(void);
+void SubMenu_Card(void);
 void Menu_TestScreen(void);
 void RunFunction(void);
+void SubMenu_Prepare(void);
+void SubMenu_Control(void);
 
 void (*pPrintScreen[8])(void);
 
@@ -30,12 +32,8 @@ void setup()
   lcd.backlight();
   lcd.createChar(0, (uint8_t *)arrowChar);  //We create the data to be sent later using lcd.write
   lcd.createChar(1, (uint8_t *)returnChar); //We create the data to be sent later using lcd.write
-  
-  pinMode(2, INPUT_PULLUP);
-  pinMode(3, INPUT_PULLUP);
-  pinMode(4, INPUT_PULLUP);
-  pinMode(5, INPUT_PULLUP);
 
+  Button_Init();
   pPrintScreen[menuDepth] = &Menu_TestScreen;
   UpdateScreen();
 }
@@ -65,24 +63,43 @@ int value = 0;
 void Menu_TestScreen(void)
 {
   START_MENU();
-  SUBMENU("SubMenu_1", SubMenu_1);
-  EDIT_ITEM_FAST("value", value);
-  ACTION_ITEM("RunFunction", RunFunction);
-  STATIC_ITEM("Bernar 1");
-  STATIC_ITEM("Berran 2");
-  STATIC_ITEM("Gulcan 3");
-  STATIC_ITEM("Static text 4");
-  STATIC_ITEM("Static text 5");
-  STATIC_ITEM("Static text 6");
-  STATIC_ITEM("Static text 7");
-  STATIC_ITEM("Static text 8");
+  STATIC_ITEM("Watch");
+  SUBMENU("Prepare", SubMenu_Prepare);
+  SUBMENU("Control", SubMenu_Control);
+  SUBMENU("Card Menu", SubMenu_Card);
+  //EDIT_ITEM_FAST("value", value);
   END_MENU();
 }
-void SubMenu_1(void)
+void SubMenu_Card(void)
 {
   START_MENU();
   BACK_ITEM("<<BACK");
-  STATIC_ITEM("Static text 1");
+  ACTION_ITEM("Refresh", RunFunction);
+  END_MENU();
+}
+void SubMenu_Prepare(void)
+{
+  START_MENU();
+  BACK_ITEM("<<BACK");
+  ACTION_ITEM("Move Axis", RunFunction);
+  ACTION_ITEM("Auto Home", RunFunction);
+  ACTION_ITEM("Auto Home X", RunFunction);
+  ACTION_ITEM("Auto Home Y", RunFunction);
+  ACTION_ITEM("Auto Home Z", RunFunction);
+  ACTION_ITEM("Bed Leveling", RunFunction);
+  ACTION_ITEM("Disable Steppers", RunFunction);
+  ACTION_ITEM("Set Home Offsets", RunFunction);
+  END_MENU();
+}
+
+void SubMenu_Control(void)
+{
+  START_MENU();
+  BACK_ITEM("<<BACK");
+  ACTION_ITEM("Motion", RunFunction);
+  ACTION_ITEM("Store Memory", RunFunction);
+  ACTION_ITEM("Load Memomry", RunFunction);
+  ACTION_ITEM("Restore Failsafe", RunFunction);
   END_MENU();
 }
 

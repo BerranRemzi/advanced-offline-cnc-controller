@@ -15,6 +15,12 @@ Button btn[4] = {
 
 static bool isSinglePressed = false;
 
+void Button_Init(){
+  pinMode(2, INPUT_PULLUP);
+  pinMode(3, INPUT_PULLUP);
+  pinMode(4, INPUT_PULLUP);
+  pinMode(5, INPUT_PULLUP);
+}
 bool IsPressed(int8_t _num)
 {
   bool returnValue = false;

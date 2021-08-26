@@ -8,5 +8,6 @@
 
 #define BTN_PRESSED LOW
 
+void Button_Init();
 bool IsPressed(int8_t _num);
 bool IsSinglePressed();
