@@ -3,6 +3,7 @@
 #include <LiquidCrystal_I2C.h>
 #include "Button.h"
 #include "LCDMenu.h"
+#include "SD.h"
 
 /*******************************************************
 
@@ -137,7 +138,7 @@ void SD_Init(){
   }
   Serial.println("initialization done.");
 
-  root = SD.open("/");
+  File root = SD.open("/");
 
   printDirectory(root, 0);
 
