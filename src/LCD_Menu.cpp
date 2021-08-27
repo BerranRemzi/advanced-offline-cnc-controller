@@ -45,12 +45,10 @@ void setup()
 
 void loop()
 {
-
-  //DrawMenu2();
   if (IsSinglePressed())
   {
     UpdateScreen();
-    UpdateScreen();
+    //UpdateScreen();
   }
   delay(10);
   ReadInputs();
@@ -58,7 +56,6 @@ void loop()
 
 void UpdateScreen(void)
 {
-  clear_screen();
   if (*pPrintScreen[menuDepth] != NULL)
   {
     pPrintScreen[menuDepth]();
@@ -80,6 +77,19 @@ void SubMenu_Card(void)
   START_MENU();
   BACK_ITEM("<<BACK");
   ACTION_ITEM("Refresh", RunFunction);
+
+  File dir = SD.open("/");
+  while (true) {
+    File entry =  dir.openNextFile();
+    if (! entry) {
+      // no more files
+      break;
+    }
+    STATIC_ITEM(entry.name());
+    entry.close();
+  }
+  dir.close();
+
   END_MENU();
 }
 void SubMenu_Prepare(void)
@@ -138,33 +148,21 @@ void SD_Init(){
   }
   Serial.println("initialization done.");
 
-  File root = SD.open("/");
+  //File root = SD.open("/");
 
-  printDirectory(root, 0);
+  //printDirectory(root, 0);
 
   Serial.println("done!");
 }
 
 void printDirectory(File dir, int numTabs) {
   while (true) {
-
     File entry =  dir.openNextFile();
     if (! entry) {
       // no more files
       break;
     }
-    for (uint8_t i = 0; i < numTabs; i++) {
-      Serial.print('\t');
-    }
     Serial.print(entry.name());
-    if (entry.isDirectory()) {
-      Serial.println("/");
-      printDirectory(entry, numTabs + 1);
-    } else {
-      // files have sizes, directories do not
-      Serial.print("\t\t");
-      Serial.println(entry.size(), DEC);
-    }
     entry.close();
   }
 }
