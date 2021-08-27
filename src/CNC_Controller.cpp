@@ -24,7 +24,7 @@ void SubMenu_Control(void);
 void SD_Init();
 void printDirectory(File dir, int numTabs);
 
-void (*pPrintScreen[8])(void);
+//void (*pPrintScreen[8])(void);
 
 LiquidCrystal_I2C lcd(0x27, LCD_WIDTH, LCD_HEIGHT);
 
@@ -38,8 +38,8 @@ void setup()
   lcd.createChar(1, (uint8_t *)returnChar); //We create the data to be sent later using lcd.write
 
   Button_Init();
-  pPrintScreen[menuDepth] = &Menu_TestScreen;
-  UpdateScreen();
+  screen_history[0].menu_function = &Menu_TestScreen;
+  LCDMenu_Task();
   SD_Init();
 }
 
@@ -47,20 +47,20 @@ void loop()
 {
   if (IsSinglePressed())
   {
-    UpdateScreen();
-    //UpdateScreen();
+    LCDMenu_Task();
+    LCDMenu_Task();
   }
   delay(10);
   ReadInputs();
 }
 
-void UpdateScreen(void)
+/*void UpdateScreen(void)
 {
-  if (*pPrintScreen[menuDepth] != NULL)
+  if (*pPrintScreen[screen_history_depth] != NULL)
   {
-    pPrintScreen[menuDepth]();
+    pPrintScreen[screen_history_depth]();
   }
-}
+}*/
 int value = 0;
 void Menu_TestScreen(void)
 {
@@ -79,9 +79,11 @@ void SubMenu_Card(void)
   ACTION_ITEM("Refresh", RunFunction);
 
   File dir = SD.open("/");
-  while (true) {
-    File entry =  dir.openNextFile();
-    if (! entry) {
+  while (true)
+  {
+    File entry = dir.openNextFile();
+    if (!entry)
+    {
       // no more files
       break;
     }
@@ -139,12 +141,15 @@ void ReadInputs(void)
     LCDMenu_Select();
   }
 }
-void SD_Init(){
+void SD_Init()
+{
   Serial.print("Initializing SD card...");
 
-  if (!SD.begin(10)) {
+  if (!SD.begin(10))
+  {
     Serial.println("initialization failed!");
-    while (1);
+    while (1)
+      ;
   }
   Serial.println("initialization done.");
 
@@ -155,10 +160,13 @@ void SD_Init(){
   Serial.println("done!");
 }
 
-void printDirectory(File dir, int numTabs) {
-  while (true) {
-    File entry =  dir.openNextFile();
-    if (! entry) {
+void printDirectory(File dir, int numTabs)
+{
+  while (true)
+  {
+    File entry = dir.openNextFile();
+    if (!entry)
+    {
       // no more files
       break;
     }
