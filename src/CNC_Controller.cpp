@@ -28,6 +28,7 @@ void printDirectory(File dir, int numTabs);
 
 LiquidCrystal_I2C lcd(0x27, LCD_WIDTH, LCD_HEIGHT);
 
+bool sdReady = false;
 void setup()
 {
   Serial.begin(115200);
@@ -54,13 +55,6 @@ void loop()
   ReadInputs();
 }
 
-/*void UpdateScreen(void)
-{
-  if (*pPrintScreen[screen_history_depth] != NULL)
-  {
-    pPrintScreen[screen_history_depth]();
-  }
-}*/
 int value = 0;
 void Menu_TestScreen(void)
 {
@@ -68,7 +62,11 @@ void Menu_TestScreen(void)
   STATIC_ITEM("Watch");
   SUBMENU("Prepare", SubMenu_Prepare);
   SUBMENU("Control", SubMenu_Control);
-  SUBMENU("Card Menu", SubMenu_Card);
+  if(sdReady){
+    SUBMENU("Card Menu", SubMenu_Card);
+  }else{
+    ACTION_ITEM("No Card", SD_Init);
+  }
   //EDIT_ITEM_FAST("value", value);
   END_MENU();
 }
@@ -143,21 +141,12 @@ void ReadInputs(void)
 }
 void SD_Init()
 {
-  Serial.print("Initializing SD card...");
-
-  if (!SD.begin(10))
+   if (!SD.begin(10))
   {
-    Serial.println("initialization failed!");
-    while (1)
-      ;
+    sdReady = false;
+  }else{
+    sdReady = true;
   }
-  Serial.println("initialization done.");
-
-  //File root = SD.open("/");
-
-  //printDirectory(root, 0);
-
-  Serial.println("done!");
 }
 
 void printDirectory(File dir, int numTabs)
