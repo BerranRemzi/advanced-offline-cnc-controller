@@ -9,3 +9,4 @@
 - [ ] SD file sending to UART
 - [ ] Dynamic Z-axis compensation when sending to UART
 - [ ] Save configuration to EEPROM
+- [ ] Integrate everithing together
