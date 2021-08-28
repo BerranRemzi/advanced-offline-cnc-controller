@@ -15,11 +15,21 @@
 void ReadInputs(void);
 void DrawMenu(void);
 void UpdateScreen(void);
-void SubMenu_Card(void);
-void Menu_TestScreen(void);
 void RunFunction(void);
-void SubMenu_Prepare(void);
-void SubMenu_Control(void);
+
+void MainScreen(void);
+
+void Control(void);
+void Setting(void);
+void CardMenu(void);
+
+void Control_MoveAxis(void);
+void Control_GrblMode(void);
+void Setting_BaudRate(void);
+void Setting_Buzzer(void);
+void Setting_MenuMemory(void);
+
+void Control_MoveAxis_Move(void);
 
 void SD_Init();
 void printDirectory(File dir, int numTabs);
@@ -39,7 +49,7 @@ void setup()
   lcd.createChar(1, (uint8_t *)returnChar); //We create the data to be sent later using lcd.write
 
   Button_Init();
-  screen_history[0].menu_function = &Menu_TestScreen;
+  screen_history[0].menu_function = &MainScreen;
   LCDMenu_Task();
   SD_Init();
 }
@@ -56,24 +66,50 @@ void loop()
 }
 
 int value = 0;
-void Menu_TestScreen(void)
+void MainScreen(void)
 {
   START_MENU();
   STATIC_ITEM("Watch");
-  SUBMENU("Prepare", SubMenu_Prepare);
-  SUBMENU("Control", SubMenu_Control);
+  SUBMENU("Control", Control);
+  SUBMENU("Setting", Setting);
   if(sdReady){
-    SUBMENU("Card Menu", SubMenu_Card);
+    SUBMENU("Card Menu", CardMenu);
   }else{
     ACTION_ITEM("No Card", SD_Init);
   }
   //EDIT_ITEM_FAST("value", value);
   END_MENU();
 }
-void SubMenu_Card(void)
+void Control(void)
 {
   START_MENU();
-  BACK_ITEM("<<BACK");
+  BACK_ITEM("Back");
+  ACTION_ITEM("Auto Home", RunFunction);
+  ACTION_ITEM("Unlock Grbl", RunFunction);
+  SUBMENU("Move Axis", Control_MoveAxis);
+  ACTION_ITEM("Zero position", RunFunction);
+  ACTION_ITEM("Spindle Speed", RunFunction);
+  ACTION_ITEM("Set Origin", RunFunction);
+  ACTION_ITEM("Go To Origin", RunFunction);
+  SUBMENU("Grbl Mode", Control_GrblMode);
+  ACTION_ITEM("Bed Leveling", RunFunction);
+  ACTION_ITEM("Disable Steppers", RunFunction);
+  END_MENU();
+}
+
+void Setting(void)
+{
+  START_MENU();
+  BACK_ITEM("Back");
+  SUBMENU("Baud Rate", Setting_BaudRate);
+  SUBMENU("Buzzer", Setting_Buzzer);
+  SUBMENU("Menu Memomry", Setting_MenuMemory);
+  END_MENU();
+}
+void CardMenu(void)
+{
+  START_MENU();
+  BACK_ITEM("Back");
   ACTION_ITEM("Refresh", RunFunction);
 
   File dir = SD.open("/");
@@ -92,29 +128,61 @@ void SubMenu_Card(void)
 
   END_MENU();
 }
-void SubMenu_Prepare(void)
+
+void Control_MoveAxis(void)
 {
   START_MENU();
-  BACK_ITEM("<<BACK");
-  ACTION_ITEM("Move Axis", RunFunction);
-  ACTION_ITEM("Auto Home", RunFunction);
-  ACTION_ITEM("Auto Home X", RunFunction);
-  ACTION_ITEM("Auto Home Y", RunFunction);
-  ACTION_ITEM("Auto Home Z", RunFunction);
-  ACTION_ITEM("Bed Leveling", RunFunction);
-  ACTION_ITEM("Disable Steppers", RunFunction);
-  ACTION_ITEM("Set Home Offsets", RunFunction);
+  BACK_ITEM("Back");
+  SUBMENU("Move 10mm", Control_MoveAxis_Move);
+  SUBMENU("Move 1mm", Control_MoveAxis_Move);
+  SUBMENU("Move 0.1mm", Control_MoveAxis_Move);
+  END_MENU();
+}
+void Control_GrblMode(void)
+{
+  START_MENU();
+  BACK_ITEM("Back");
+  ACTION_ITEM("Spindle", RunFunction);
+  ACTION_ITEM("Laser", RunFunction);
   END_MENU();
 }
 
-void SubMenu_Control(void)
+void Setting_BaudRate(void)
 {
   START_MENU();
-  BACK_ITEM("<<BACK");
-  ACTION_ITEM("Motion", RunFunction);
-  ACTION_ITEM("Store Memory", RunFunction);
-  ACTION_ITEM("Load Memomry", RunFunction);
-  ACTION_ITEM("Restore Failsafe", RunFunction);
+  BACK_ITEM("Back");
+  ACTION_ITEM("9600", RunFunction);
+  ACTION_ITEM("19200", RunFunction);
+  ACTION_ITEM("38400", RunFunction);
+  ACTION_ITEM("57600", RunFunction);
+  ACTION_ITEM("115200", RunFunction);
+  END_MENU();
+}
+
+void Setting_Buzzer(void)
+{
+  START_MENU();
+  BACK_ITEM("Back");
+  ACTION_ITEM("Yes", RunFunction);
+  ACTION_ITEM("No", RunFunction);
+  END_MENU();
+}
+void Setting_MenuMemory(void)
+{
+  START_MENU();
+  BACK_ITEM("Back");
+  ACTION_ITEM("Yes", RunFunction);
+  ACTION_ITEM("No", RunFunction);
+  END_MENU();
+}
+
+void Control_MoveAxis_Move(void)
+{
+  START_MENU();
+  BACK_ITEM("Back");
+  ACTION_ITEM("Move X", RunFunction);
+  ACTION_ITEM("Move Y", RunFunction);
+  ACTION_ITEM("Move Z", RunFunction);
   END_MENU();
 }
 
