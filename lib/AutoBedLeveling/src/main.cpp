@@ -9,8 +9,10 @@ void Test2();
 void Test3();
 void Test4();
 
+char buffer[MAX_LENGTH] = {};
+
 int main(void) {
-    const char filename[] = "bottom_contour.nc";
+    const char filename[] = "copper.nc";
     FILE* fp = fopen(filename, "r");
 
     if (fp == NULL)
@@ -19,12 +21,12 @@ int main(void) {
         return 1;
     }
 
-    char buffer[MAX_LENGTH];
     char printBuffer[MAX_LENGTH];
     ABL_LoadLinePointer(buffer);
     int16_t lineCounter = 0;
     Coordinates_t pos = { 0.0, 0.0, 0.0 };
-    while (fgets(buffer, MAX_LENGTH, fp)) {
+    fgets(buffer, 4, fp);
+    while (fgets(buffer, MAX_LENGTH, fp) != NULL) {
         double value = 0;
         char temp[MAX_LENGTH];
         printBuffer[0] = '\0';
@@ -48,7 +50,6 @@ int main(void) {
                 sprintf(temp, " Z%.2f", pos.z);
                 strcat(printBuffer, temp);
             }
-            //printf("%0.2f, %0.2f, %0.2f\n", pos.x,pos.y,pos.z);
         }
         else if (true == ABL_ParseNumber('M', &value)) {
             sprintf(temp, "M%02d", (int) value);
@@ -59,11 +60,15 @@ int main(void) {
                 strcat(printBuffer, temp);
             }
         }
+        else {
+            buffer[(int)strlen(buffer) - 1] = '\0';
+            strcat(printBuffer, buffer);
+        }
 #ifndef DEBUG
         if (strlen(printBuffer)) {
             //printf("%-30s",testData[lineCounter]);
-            printf("%-30s", printBuffer);
-            if (strcmp(printBuffer, testData[lineCounter])) {
+            printf("%-35s", printBuffer);
+            if (lineCounter < 255 && strcmp(printBuffer, testData[lineCounter])) {
                 printf(" - NOK\n");
             }
             else {
@@ -77,9 +82,9 @@ int main(void) {
     // close the file
     fclose(fp);
 
-    Test1();
-    Test2();
-    Test3();
+    //Test1();
+    //Test2();
+    //Test3();
     return 0;
 }
 

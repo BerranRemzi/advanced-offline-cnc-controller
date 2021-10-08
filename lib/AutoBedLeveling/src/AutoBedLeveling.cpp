@@ -35,6 +35,9 @@ bool ABL_ParseNumber(char code, double* pValue)
     char* ptr = serialBuffer; // start at the beginning of buffer
     while ((int32_t) ptr > 1 && (*ptr) && (int32_t) ptr < (int32_t) serialBuffer + soFar)
     { // walk to the end
+        if (*ptr < 'A' || *ptr > 'Z') {
+            break;
+        }
         if (*ptr == code)
         {                            // if you find code on your walk,
             *pValue = atof(ptr + 1); // convert the digits that follow into a double and return it
