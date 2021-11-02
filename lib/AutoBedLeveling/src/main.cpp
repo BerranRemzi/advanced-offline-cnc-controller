@@ -30,44 +30,57 @@ int main(void) {
         double value = 0;
         char temp[MAX_LENGTH];
         printBuffer[0] = '\0';
+        bool isCommandAvailable = false;
 
         if (true == ABL_ParseNumber('G', &value)) {
-            sprintf(temp, "G%02d", (int) value);
+            isCommandAvailable = true;
+            sprintf(temp, "G%02d ", (int) value);
             strcat(printBuffer, temp);
-            if (true == ABL_ParseNumber('F', &value)) {
-                sprintf(temp, " F%d", (int) value);
-                strcat(printBuffer, temp);
-            }
-            if (true == ABL_ParseNumber('X', &pos.x)) {
-                sprintf(temp, " X%.2f", pos.x);
-                strcat(printBuffer, temp);
-            }
-            if (true == ABL_ParseNumber('Y', &pos.y)) {
-                sprintf(temp, " Y%.2f", pos.y);
-                strcat(printBuffer, temp);
-            }
-            if (true == ABL_ParseNumber('Z', &pos.z)) {
-                sprintf(temp, " Z%.2f", pos.z);
-                strcat(printBuffer, temp);
-            }
         }
-        else if (true == ABL_ParseNumber('M', &value)) {
-            sprintf(temp, "M%02d", (int) value);
+        if (true == ABL_ParseNumber('F', &value)) {
+            isCommandAvailable = true;
+            sprintf(temp, "F%d ", (int) value);
             strcat(printBuffer, temp);
-
-            if (true == ABL_ParseNumber('S', &value)) {
-                sprintf(temp, " S%d", (int) value);
-                strcat(printBuffer, temp);
-            }
         }
-        else {
-            buffer[(int)strlen(buffer) - 1] = '\0';
+        if (true == ABL_ParseNumber('T', &value)) {
+            isCommandAvailable = true;
+            sprintf(temp, "T%d ", (int) value);
+            strcat(printBuffer, temp);
+        }
+        if (true == ABL_ParseNumber('M', &value)) {
+            isCommandAvailable = true;
+            sprintf(temp, "M%02d ", (int) value);
+            strcat(printBuffer, temp);
+        }
+        if (true == ABL_ParseNumber('S', &value)) {
+            isCommandAvailable = true;
+            sprintf(temp, "S%d", (int) value);
+            strcat(printBuffer, temp);
+        }
+        if (true == ABL_ParseNumber('X', &pos.x)) {
+            isCommandAvailable = true;
+            sprintf(temp, "X%.3f ", pos.x);
+            strcat(printBuffer, temp);
+        }
+        if (true == ABL_ParseNumber('Y', &pos.y)) {
+            isCommandAvailable = true;
+            sprintf(temp, "Y%.3f ", pos.y);
+            strcat(printBuffer, temp);
+        }
+        if (true == ABL_ParseNumber('Z', &pos.z)) {
+            isCommandAvailable = true;
+            sprintf(temp, "Z%.3f ", pos.z);
+            strcat(printBuffer, temp);
+        }
+        if (false == isCommandAvailable) {
+            buffer[(int) strlen(buffer) - 1] = '\0';
             strcat(printBuffer, buffer);
         }
 #ifndef DEBUG
         if (strlen(printBuffer)) {
             //printf("%-30s",testData[lineCounter]);
             printf("%-35s", printBuffer);
+#if 0
             if (lineCounter < 255 && strcmp(printBuffer, testData[lineCounter])) {
                 printf(" - NOK\n");
             }
@@ -75,6 +88,9 @@ int main(void) {
                 printf(" - OK\n");
             }
             lineCounter++;
+#else
+            printf("\n");
+#endif
         }
 #endif
     }
@@ -88,7 +104,7 @@ int main(void) {
     return 0;
 }
 
-void Test1(){
+void Test1() {
     printf("line();\n");
     line(0, 0);
     line(7, 28);
@@ -96,7 +112,7 @@ void Test1(){
     line(28, 2);
     line(0, 0);
 }
-void Test2(){
+void Test2() {
     printf("ComputeLine();\n");
     while (!ComputeLine(0, 0));
     while (!ComputeLine(7, 28));
@@ -104,8 +120,8 @@ void Test2(){
     while (!ComputeLine(28, 2));
     while (!ComputeLine(0, 0));
 }
-void Test3(){
-    while(Available()){
+void Test3() {
+    while (Available()) {
         string temp = ReadStringUntil('\r');
         std::cout << temp;
     }

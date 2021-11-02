@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <ctype.h>
 
 #define RATIO 1000.0
 
@@ -43,7 +44,8 @@ bool ABL_ParseNumber(char code, double* pValue)
             *pValue = atof(ptr + 1); // convert the digits that follow into a double and return it
             return true;
         }
-        ptr = strchr(ptr, ' ') + 1; // take a step from here to the letter after the next space
+        //ptr = strchr(ptr, ' ') + 1; // take a step from here to the letter after the next space
+        while (*ptr && !isupper(*++ptr));
     }
     return false; // end reached, nothing found, return default val.
 }
