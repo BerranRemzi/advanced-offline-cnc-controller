@@ -4,6 +4,7 @@
 #include "Button.h"
 #include "LCDMenu.h"
 #include "SD.h"
+#include "AutoBedLeveling.h"
 
 /*******************************************************
 
@@ -33,6 +34,7 @@ void Control_MoveAxis_Move(void);
 
 void SD_Init();
 void printDirectory(File dir, int numTabs);
+void Dummy();
 
 //void (*pPrintScreen[8])(void);
 
@@ -63,6 +65,7 @@ void loop()
   }
   delay(10);
   ReadInputs();
+  Dummy();
 }
 
 int value = 0;
@@ -230,4 +233,10 @@ void printDirectory(File dir, int numTabs)
     Serial.print(entry.name());
     entry.close();
   }
+}
+
+void Dummy(){
+  char lineBuffer[64];
+  while (!ABL_ComputeLine(lineBuffer));
+  (void)bilinearInterpolation(0,0,0,0,0,0,0,0,0,0);
 }
