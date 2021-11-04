@@ -75,12 +75,12 @@ Index_t getGridIndex(const CoordLong_t* const coord)
     if (temp.x < 0)
         temp.x = 0;
     else if (temp.x > GRID_POINTS_X)
-        temp.x = 3;
+        temp.x = GRID_POINTS_X;
 
     if (temp.y < 0)
         temp.y = 0;
     else if (temp.y > GRID_POINTS_Y)
-        temp.y = 3;
+        temp.y = GRID_POINTS_Y;
 
     return temp;
 }
