@@ -4,21 +4,28 @@
 
 #define MAX_LENGTH 255
 
-void Test1();
+void Test1(const char fileName[]);
 void Test2();
 void Test3();
-void Test4();
+void Test4(const char fileName[]);
 
 char buffer[MAX_LENGTH] = {};
 
 int main(void) {
-    const char filename[] = "copper.nc";
-    FILE* fp = fopen(filename, "r");
+
+    //Test1("bottom_contour.nc"); //Parse G-code
+    //Test2(); //Find intersection with lin3()
+    //Test3(); //Find intersection with ComputeLine()
+    Test4("bottom_contour.nc"); //
+    return 0;
+}
+
+void Test1(const char fileName[]) {
+    FILE* fp = fopen(fileName, "r");
 
     if (fp == NULL)
     {
-        printf("Error: could not open file %s", filename);
-        return 1;
+        printf("Error: could not open file %s", fileName);
     }
 
     char printBuffer[MAX_LENGTH];
@@ -97,14 +104,9 @@ int main(void) {
 
     // close the file
     fclose(fp);
-
-    //Test1();
-    //Test2();
-    //Test3();
-    return 0;
 }
 
-void Test1() {
+void Test2() {
     printf("line();\n");
     line(0, 0);
     line(7, 28);
@@ -112,17 +114,23 @@ void Test1() {
     line(28, 2);
     line(0, 0);
 }
-void Test2() {
-    printf("ComputeLine();\n");
-    while (!ComputeLine(0, 0));
-    while (!ComputeLine(7, 28));
-    while (!ComputeLine(2, 7));
-    while (!ComputeLine(28, 2));
-    while (!ComputeLine(0, 0));
-}
 void Test3() {
-    while (Available()) {
-        string temp = ReadStringUntil('\r');
-        std::cout << temp;
+    printf("ComputeLine();\n");
+    while (!ComputeLine(0, 0, 0));
+    while (!ComputeLine(7, 28, 0));
+    while (!ComputeLine(2, 7, 0));
+    while (!ComputeLine(28, 2, 0));
+    while (!ComputeLine(0, 0, 0));
+}
+void Test4(const char _filename[]) {
+    File myFile;
+    myFile = SD.open(_filename);
+    if (myFile) {
+        while (myFile.available()) {
+            char* lineBuffer = myFile.readUntil('\n');
+            while (!ABL_ComputeLine(lineBuffer));
+        }
+        // close the file:
+        myFile.close();
     }
 }

@@ -41,8 +41,8 @@ extern "C" {
     double GetX(double xp, Coordinates_t const* p0, Coordinates_t const* p1);
     double GetY(double xp, Coordinates_t const* p0, Coordinates_t const* p1);
     bool getIntersections(char* buffer, Coordinates_t current);
-    bool ComputeLine(double newx, double newy);
-
+    bool ComputeLine(double newx, double newy, double newz);
+    bool ABL_ComputeLine(char lineBuffer[]);
 #ifdef __cplusplus
 }
 #endif

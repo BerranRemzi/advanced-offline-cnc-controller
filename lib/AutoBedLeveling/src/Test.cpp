@@ -62,3 +62,42 @@ string ReadStringUntil(char marker){
 bool Available(){
     return false;
 }
+
+SDCard SD;
+
+File SDCard::open(const char fileName[])
+{
+    File myFile;
+    myFile.fp = fopen(fileName, "r");
+    return myFile;
+}
+
+uint32_t File::available()
+{
+    uint32_t availableCount = 0;
+    if (fgets(buffer, 255, fp) != NULL) {
+        availableCount = 1;
+    }
+    return availableCount;
+}
+
+char* File::readUntil(char _delimiter)
+{
+    return buffer;
+}
+
+File::operator bool()
+{
+    return true;
+}
+
+void File::close()
+{
+    // close the file
+    fclose(fp);
+}
+
+void DummySerial::println(char _data[])
+{
+    printf("%s", _data);
+}
